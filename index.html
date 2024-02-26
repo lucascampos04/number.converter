@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor Decimal/Binário</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    input, p, select {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" placeholder="Valor" id="valor">
+
+  <select id="direcao">
+    <option value="decToBin">Decimal para Binário</option>
+    <option value="binToDec">Binário para Decimal</option>
+  </select>
+
+  <p id="resultado">Resultado</p>
+
+  <button id="converter">Converter</button>
+
+  <script>
+    document.getElementById("converter").addEventListener("click", () => {
+      const valor = document.getElementById("valor").value;
+      const direcao = document.getElementById("direcao").value;
+
+      if (direcao === "decToBin") {
+        const binario = parseInt(valor, 10).toString(2);
+        document.getElementById("resultado").textContent = "Resultado: " + binario;
+      } else {
+        const decimal = parseInt(valor, 2).toString(10);
+        document.getElementById("resultado").textContent = "Resultado: " + decimal;
+      }
+
+      console.log("Valor: " + valor);
+      console.log("Direção: " + direcao);
+    });
+  </script>
+</body>
+</html>
