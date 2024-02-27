@@ -1,63 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conversor Decimal/Binário</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversor</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      height: 100vh;
+      margin: 0%;
+      padding: 0%;
+      box-sizing: border-box;
     }
 
-    input, p, select {
-      padding: 10px;
-      margin: 5px;
-      font-size: 16px;
+    header {
+      display: flex;
+      justify-content: center;
+      font-size: 80px;
+      font-weight: 900;
+      background-color: cornflowerblue;
+      color: white;
+      -webkit-text-stroke: 1px black;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    select {
+      height: 40px;
+      text-align: center;
+      width: 200px;
     }
 
     button {
-      padding: 10px;
-      font-size: 16px;
+      border-radius: 4px;
+      background-color: #5ca1e1;
+      border: none;
+      color: #fff;
+      text-align: center;
+      font-size: 32px;
+      padding: 16px;
+      width: 220px;
+      transition: all 0.5s;
       cursor: pointer;
+      margin: 36px;
+      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    button:after {
+      content: "»";
+      position: absolute;
+      opacity: 0;
+      top: 14px;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    button:hover {
+      padding-right: 24px;
+      padding-left: 8px;
+    }
+
+    button:hover:after {
+      opacity: 1;
+      right: 10px;
+    }
+
+    input {
+      margin-top: 10px;
+      height: 30px;
+      width: 320px;
+    }
+
+    #resultadosContainer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .resultadoItem {
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
-  <input type="text" placeholder="Valor" id="valor">
+  <header>Convert</header>
 
-  <select id="direcao">
-    <option value="decToBin">Decimal para Binário</option>
-    <option value="binToDec">Binário para Decimal</option>
-  </select>
+  <div class="container">
+    <input type="text" placeholder="Valor" id="valor" />
+    <select id="direcao">
+      <option value="decToBin">Decimal para Binário</option>
+      <option value="binToDec">Binário para Decimal</option>
+      <option value="octToDec">Octal para Decimal</option>
+      <option value="decToOct">Decimal para Octal</option>
+      <option value="decToHex">Decimal para Hexadecimal</option>
+      <option value="hexToDec">Hexadecimal para Decimal</option>
+      <option value="hexToBin">Hexadecimal para Binário</option>
+      <option value="binToHex">Binário para Hexadecimal</option>
+      <option value="octToBin">Octal para Binário</option>
+      <option value="binToOct">Binário para Octal</option>
+    </select>
 
-  <p id="resultado">Resultado</p>
+    <p id="resultado">Resultado</p>
 
-  <button id="converter">Converter</button>
+    <button id="converter">Converter</button>
+
+    <div id="resultadosContainer">
+      <p>Resultados Salvos:</p>
+      <div id="resultadosLista"></div>
+    </div>
+
+    <button id="exibirResultados">Resultados</button>
+  </div>
 
   <script>
+    const result = document.getElementById("resultado");
+    const resultadosContainer = document.getElementById("resultadosContainer");
+    const resultadosLista = document.getElementById("resultadosLista");
+
+    const saveLocalStorage = (chave, valor) => {
+      localStorage.setItem(chave, valor);
+    };
+
+    const obterLocalStorage = (chave) => {
+      return localStorage.getItem(chave);
+    };
+
     document.getElementById("converter").addEventListener("click", () => {
       const valor = document.getElementById("valor").value;
       const direcao = document.getElementById("direcao").value;
 
+      let resultado = "";
+
       if (direcao === "decToBin") {
-        const binario = parseInt(valor, 10).toString(2);
-        document.getElementById("resultado").textContent = "Resultado: " + binario;
-      } else {
-        const decimal = parseInt(valor, 2).toString(10);
-        document.getElementById("resultado").textContent = "Resultado: " + decimal;
+        resultado = parseInt(valor, 10).toString(2);
+      } else if (direcao === "binToDec") {
+        resultado = parseInt(valor, 2).toString(10);
+      } else if (direcao === "octToDec") {
+        resultado = parseInt(valor, 8).toString(10);
+      } else if (direcao === "decToOct") {
+        resultado = parseInt(valor, 10).toString(8);
+      } else if (direcao === "decToHex") {
+        resultado = parseInt(valor, 10).toString(16);
+      } else if (direcao === "hexToDec") {
+        resultado = parseInt(valor, 16).toString(10);
+      } else if (direcao === "hexToBin") {
+        resultado = parseInt(valor, 16).toString(2);
+      } else if (direcao === "binToHex") {
+        resultado = parseInt(valor, 2).toString(16);
+      } else if (direcao === "octToBin") {
+        resultado = parseInt(valor, 8).toString(2);
+      } else if (direcao === "binToOct") {
+        resultado = parseInt(valor, 2).toString(8);
       }
+
+      if (valor === "") {
+        result.textContent = "Digite um valor";
+        return;
+      }
+
+      result.textContent = "Resultado: " + resultado;
+      saveLocalStorage(`resultado_${Date.now()}`, resultado);
+
+      saveLocalStorage("valor", valor);
 
       console.log("Valor: " + valor);
       console.log("Direção: " + direcao);
     });
+
+    document.getElementById("exibirResultados").addEventListener("click", () => {
+      resultadosLista.innerHTML = ""; // Limpar resultados anteriores
+
+      // Obter todos os itens salvos no localStorage com chave que começa com "resultado"
+      for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        if (chave.startsWith("resultado")) {
+          const valor = localStorage.getItem(chave);
+
+          // Criar elemento para exibir resultado e adicionar à lista
+          const resultadoItem = document.createElement("div");
+          resultadoItem.classList.add("resultadoItem");
+          resultadoItem.textContent = `Resultado: ${valor}`;
+          resultadosLista.appendChild(resultadoItem);
+        }
+      }
+
+      resultadosContainer.style.display = "flex"; 
+    });
+
+    window.onload = () => {
+      const valorSalvo = obterLocalStorage("valor");
+
+      if (valorSalvo) {
+        document.getElementById("valor").value = valorSalvo;
+      }
+    };
+
+   window.addEventListener("beforeunload", () => {
+    localStorage.clear();
+   })
   </script>
 </body>
 </html>
